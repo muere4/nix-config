@@ -25,7 +25,7 @@
     # unstable.discord
 
     # Navegadores adicionales
-    # chromium
+    brave
   ];
 
   # Configuración de programas
@@ -85,6 +85,7 @@
       "x-scheme-handler/unknown" = "microsoft-edge.desktop";
     };
   };
+
 
   # Configuración de archivos de dotfiles (opcional)
   # home.file.".config/example/config.toml".text = ''
