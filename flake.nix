@@ -18,7 +18,7 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs: {
     nixosConfigurations = {
       # Cambia "hostname" por el nombre de tu sistema
-      nixos = nixpkgs.lib.nixosSystem {
+      pichi = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
@@ -29,7 +29,7 @@
           };
         };
         modules = [
-          ./configuration.nix
+          ./nixos-configurations/pichi/configuration.nix
 
           # Habilitar Home Manager
           home-manager.nixosModules.home-manager
@@ -37,7 +37,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.muere = import ./home.nix; # Tu usuario actual
+              users.muere = import ./pichi.nix; # Tu usuario actual
 
               # Pasar argumentos adicionales a Home Manager
               extraSpecialArgs = {
