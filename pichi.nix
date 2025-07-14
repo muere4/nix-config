@@ -1,6 +1,55 @@
-{ config, pkgs, inputs, unstable, ... }:
+{ config, pkgs, inputs, unstable, system, ... }:
 
-{
+let
+  utils = import ./utils;
+  load = f: import f { inherit config pkgs inputs unstable system utils; };
+
+  # Función para cargar configuraciones (estilo Rebecca)
+  cfg = p: utils.env.configOnlyEnvironment (import p);
+  mkConfigs = cfgPaths:
+    utils.env.concatEnvironments (builtins.map cfg cfgPaths);
+
+  # Función para cargar imports (estilo Rebecca)
+  mkImport = p: utils.env.importOnlyEnvironment (
+    import p { inherit config pkgs inputs unstable system utils; }
+  );
+  mkImports = importPaths:
+    utils.env.concatEnvironments (builtins.map mkImport importPaths);
+
+  # Paquetes básicos usando tu sistema de collections existente
+  systemDefaults = import ./collections/system-defaults.nix {
+    inherit pkgs utils unstable;
+    platform = "x86-64";
+  };
+
+  # Paquetes específicos de desarrollo
+  devPackages = utils.env.packagesEnvironment (with pkgs; [
+    vscode
+  ]);
+
+  # Navegadores
+  browsers = utils.env.packagesEnvironment (with pkgs; [
+    brave
+    # Ejemplo de paquete del canal unstable:
+    # unstable.discord
+  ]);
+
+  # Configuraciones usando mkImports para seguir el patrón de Rebecca
+  configs = mkImports [
+    ./configs/bash.nix
+    ./configs/direnv.nix
+    ./configs/git.nix
+  ];
+
+  # Ambiente completo combinando todo (estilo Rebecca)
+  environment = utils.env.concatEnvironments [
+    systemDefaults  # Ya incluye basicPackages y multimedia de collections/
+    configs
+    devPackages
+    browsers
+  ];
+
+in {
   # Información básica del usuario
   home.username = "muere";
   home.homeDirectory = "/home/muere";
@@ -8,63 +57,12 @@
   # Versión de Home Manager
   home.stateVersion = "25.05";
 
-  # Paquetes que quieres instalar para tu usuario
-  home.packages = with pkgs; [
-    # Herramientas básicas
-    htop
-    tree
-    unzip
+  # Habilitar Home Manager para que se gestione a sí mismo
+  programs.home-manager.enable = true;
 
-    # Desarrollo
-    vscode
-
-    # Multimedia
-    vlc
-
-    # Ejemplo de paquete del canal unstable:
-    # unstable.discord
-
-    # Navegadores adicionales
-    brave
-  ];
-
-  # Configuración de programas
-  programs = {
-    # Habilitar Home Manager para que se gestione a sí mismo
-    home-manager.enable = true;
-
-    # Configuración de Git
-    git = {
-      enable = true;
-      userName = "muere4";
-      userEmail = "muere4@gmail.com";
-      extraConfig = {
-        init.defaultBranch = "main";
-        core.editor = "kate"; # o "kate", "code", "vim", etc.
-        color.ui = "auto";
-  };
-    };
-
-    # Bash
-    bash = {
-      enable = true;
-      enableCompletion = true;
-      bashrcExtra = ''
-        # Alias personalizados
-        alias ll='ls -la'
-        alias la='ls -la'
-        alias ..='cd ..'
-        alias ...='cd ../..'
-      '';
-    };
-
-    # Configuración de direnv (opcional, útil para proyectos con flakes)
-    direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      nix-direnv.enable = true;
-    };
-  };
+  # Usar el sistema modular para imports y paquetes
+  imports = environment.imports;
+  home.packages = environment.packages;
 
   # Variables de entorno
   home.sessionVariables = {
@@ -85,7 +83,6 @@
       "x-scheme-handler/unknown" = "microsoft-edge.desktop";
     };
   };
-
 
   # Configuración de archivos de dotfiles (opcional)
   # home.file.".config/example/config.toml".text = ''
