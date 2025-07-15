@@ -118,17 +118,17 @@
   ];
 
   # Configuración XDG para aplicaciones por defecto
-  xdg.mime = {
-    enable = true;
-    defaultApplications = {
-      "application/pdf" = "microsoft-edge.desktop";
-      "text/html" = "microsoft-edge.desktop";
-      "x-scheme-handler/http" = "microsoft-edge.desktop";
-      "x-scheme-handler/https" = "microsoft-edge.desktop";
-      "x-scheme-handler/about" = "microsoft-edge.desktop";
-      "x-scheme-handler/unknown" = "microsoft-edge.desktop";
-    };
-  };
+#   xdg.mime = {
+#     enable = true;
+#     defaultApplications = {
+#       "application/pdf" = "microsoft-edge.desktop";
+#       "text/html" = "microsoft-edge.desktop";
+#       "x-scheme-handler/http" = "microsoft-edge.desktop";
+#       "x-scheme-handler/https" = "microsoft-edge.desktop";
+#       "x-scheme-handler/about" = "microsoft-edge.desktop";
+#       "x-scheme-handler/unknown" = "microsoft-edge.desktop";
+#     };
+#   };
 
   # Configuración de programas adicionales
   # programs.mtr.enable = true;

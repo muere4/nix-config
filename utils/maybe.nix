@@ -4,33 +4,61 @@ let
   list = import ./list.nix;
 in
 rec {
-  just         = x: { isJust = true;  fromJust = x; };
-  nothing      = { isJust = false; fromJust = null; };
-  isJust       = { isJust, fromJust }: isJust;
-  isNothing    = { isJust, fromJust }: !isJust;
+  just = x: { isJust = true; fromJust = x; };
+  isJust = { isJust, fromJust}: isJust;
 
-  fmap         = f: m:
-    if m.isJust then { isJust = true; fromJust = f m.fromJust; }
+  nothing = { isJust = false; fromJust = null; };
+  isNothing = { isJust, fromJust}: !isJust;
+
+  fmap = f: { isJust, fromJust }:
+    if isJust
+    then { isJust = true; fromJust = f fromJust; }
+    else { isJust = false; fromJust = null; };
+
+  maybeIf = shouldJust: val:
+    if shouldJust then just val else nothing;
+
+  pure = just;
+  apply = f: optionalVal:
+    if isNothing f
+    then nothing
+    else
+      if isNothing optionalVal
+      then nothing
+      else just (f.fromJust optionalVal.fromJust);
+
+  return = just;
+
+  join = optionalOptionalVal:
+    if isJust optionalOptionalVal
+    then optionalOptionalVal.fromJust
     else nothing;
 
-  maybeIf      = guard: val: if guard then just val else nothing;
-  pure         = just;
-  apply        = mf: ma:
-    if mf.isNothing || ma.isNothing then nothing
-    else just (mf.fromJust ma.fromJust);
+  bind = optionalVal: f:
+    if isNothing optionalVal
+    then nothing
+    else f optionalVal.fromJust;
 
-  return       = just;
+  fromMaybe = default: optionalValue:
+    if isJust optionalValue
+    then optionalValue.fromJust
+    else default;
 
-  join         = mm:
-    if mm.isJust then mm.fromJust else nothing;
+  maybe = default: f: optionalVal:
+    fromMaybe default (fmap f optionalVal);
 
-  bind         = m: f: if m.isNothing then nothing else f m.fromJust;
-  fromMaybe    = default: m: if m.isJust then m.fromJust else default;
-  maybe        = default: f: m: fromMaybe default (fmap f m);
+  listToMaybe = lst:
+    if builtins.length lst == 0 then nothing else just (builtins.head lst);
 
-  listToMaybe  = lst: if lst == [] then nothing else just (builtins.head lst);
-  maybeToList  = m: if m.isJust then [ m.fromJust ] else [];
-  consMaybe    = m: lst: (maybeToList m) ++ lst;
-  catMaybes    = vals: list.reverse (builtins.foldl' (func.flip consMaybe) [] vals);
-  alternative  = a: b: if a.isJust then a else b;
+  maybeToList = optionalVal:
+    if isJust optionalVal then [optionalVal.fromJust] else [];
+
+  consMaybe = optionalVal: lst:
+    (maybeToList optionalVal) ++ lst;
+
+  catMaybes = optionalVals:
+    list.reverse (builtins.foldl' (func.flip consMaybe) [] optionalVals);
+
+  alternative = a: b:
+    if isJust a then a else b;
 }

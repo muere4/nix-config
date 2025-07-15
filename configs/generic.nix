@@ -1,6 +1,6 @@
-{ pkgs, utils, inputs, system, ...}:
+{ pkgs, unstable, utils, inputs, system, ...}:
 let
-  cfg = p: utils.env.configOnlyEnvironment (import p);
+  cfg = p: utils.env.configOnlyEnvironment (import p { inherit pkgs unstable utils inputs system; });
   mkConfigs = cfgPaths: utils.env.concatEnvironments (builtins.map cfg cfgPaths);
 
   generalConfigs = mkConfigs [
@@ -9,4 +9,4 @@ let
     ./git.nix
   ];
 
-in generalConfigs
+in utils.env.concatEnvironments [generalConfigs ]

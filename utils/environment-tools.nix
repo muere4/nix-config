@@ -4,31 +4,27 @@ rec {
     let
       a = unpartialEnvironment aPartial;
       b = unpartialEnvironment bPartial;
-    in {
-      packages           = a.packages ++ b.packages;
-      imports            = a.imports ++ b.imports;
-      emacsExtraPackages = epkgs: (a.emacsExtraPackages epkgs) ++ (b.emacsExtraPackages epkgs);
-      emacsExtraConfig   = a.emacsExtraConfig + b.emacsExtraConfig;
-    };
+    in { packages = a.packages ++ b.packages;
+         imports = a.imports ++ b.imports;
+         emacsExtraPackages = epkgs: (a.emacsExtraPackages epkgs) ++ (b.emacsExtraPackages epkgs);
+         emacsExtraConfig = a.emacsExtraConfig + b.emacsExtraConfig;
+       };
 
-  emptyEnvironment = {
-    packages           = [];
-    imports            = [];
-    emacsExtraPackages = _ : [];
-    emacsExtraConfig   = "";
-  };
+  emptyEnvironment =
+    { packages = []; imports = []; emacsExtraPackages = {...}: []; emacsExtraConfig = ""; };
 
-  unpartialEnvironment = pe: emptyEnvironment // pe;
-  concatEnvironments   = builtins.foldl' mergeEnvironments emptyEnvironment;
+  unpartialEnvironment = partialEnvironment:
+    emptyEnvironment // partialEnvironment;
 
-  simpleEnvironment = args@{ packages, imports }: args // {
-    emacsExtraPackages = _ : [];
-    emacsExtraConfig   = "";
-  };
+  concatEnvironments =
+    builtins.foldl' mergeEnvironments emptyEnvironment;
 
-  packagesEnvironment     = pkgsList: simpleEnvironment { inherit pkgsList; imports = []; packages = pkgsList; };
-  packageEnvironment      = pkg: simpleEnvironment { packages = [ pkg ]; imports = []; };
-  importsEnvironment      = importsList: simpleEnvironment { packages = []; imports = importsList; };
-  importOnlyEnvironment   = imp: simpleEnvironment { packages = []; imports = [ imp ]; };
-  configOnlyEnvironment   = cfgVal: importOnlyEnvironment (x: cfgVal);
+  simpleEnvironment = { packages, imports }:
+    { inherit packages imports; emacsExtraPackages = {...}: []; emacsExtraConfig = ""; };
+
+  packagesEnvironment = packages: simpleEnvironment { inherit packages; imports = []; };
+  packageEnvironment = package: simpleEnvironment { imports = []; packages = [package]; };
+  importsEnvironment = imports: simpleEnvironment { inherit imports; packages = []; };
+  importOnlyEnvironment = importVal: simpleEnvironment { imports = [ importVal ]; packages = []; };
+  configOnlyEnvironment = configValue: importOnlyEnvironment (any: configValue);
 }

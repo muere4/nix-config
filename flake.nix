@@ -17,7 +17,6 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs: {
     nixosConfigurations = {
-      # Cambia "hostname" por el nombre de tu sistema
       pichi = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
@@ -37,11 +36,12 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.muere = import ./pichi.nix; # Tu usuario actual
+              users.muere = ./pichi.nix; # Sin import, como en julia
 
               # Pasar argumentos adicionales a Home Manager
               extraSpecialArgs = {
                 inherit inputs;
+                system = "x86_64-linux";
                 unstable = import nixpkgs-unstable {
                   system = "x86_64-linux";
                   config.allowUnfree = true;
