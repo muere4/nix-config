@@ -26,7 +26,12 @@ let
 #                                           extraPackages = e.emacsExtraPackages;
 #                                           extraConfigs = [e.emacsExtraConfig];
 #                                         };
-    in utils.env.concatEnvironments [e usrEnvs];
+      vscodeEnvironment = import ./vscode { inherit pkgs utils;
+                                     userDefinedExtensions = e.vscodeExtraExtensions or (vscode-extensions: []);
+                                     extraSettings = e.vscodeExtraSettings or {};
+                                   };
+
+    in utils.env.concatEnvironments [e vscodeEnvironment usrEnvs];
   homeConfig =
     {
       # Let Home Manager install and manage itself.

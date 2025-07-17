@@ -8,7 +8,10 @@ import ./generic.nix
   { desktopEnvironment = "plasma";
     platform = "x86-64";
     extraEnvironments = [ ];
-    extraPackages = [ pkgs.gparted ];
+    extraPackages = [
+    pkgs.gparted
+    pkgs.libreoffice
+    ];
 #     developmentEnvironmentArgs = {
 #       haskell-formatter-package = ./development-environment/haskell/formatter/fourmolu.nix;
 #     };

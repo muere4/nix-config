@@ -25,6 +25,8 @@
     # networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
   };
 
+
+
   # Configuración de zona horaria
   time.timeZone = "America/Argentina/Buenos_Aires";
 
@@ -116,6 +118,7 @@
     # Ejemplo de cómo usar paquetes del canal unstable:
     # unstable.neovim
   ];
+
 
   # Configuración XDG para aplicaciones por defecto
 #   xdg.mime = {

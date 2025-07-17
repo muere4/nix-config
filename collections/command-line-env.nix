@@ -6,4 +6,8 @@ utils.env.packagesEnvironment (with pkgs; [
     unzip
     renameutils
     rename
+    cmatrix
+    ntfs3g
+    fuse3
+    fuse
 ])
