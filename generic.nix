@@ -18,14 +18,10 @@ let
     let
       usrEnvs = utils.env.concatEnvironments extraEnvironments;
       envPackages = import ./collections/system-defaults.nix {inherit pkgs unstable utils platform; };
-      #devEnvironment = import ./development-environment ({ inherit pkgs utils haskellVersion; } // developmentEnvironmentArgs);
+      devEnvironment = import ./development-environment ({ inherit pkgs utils haskellVersion; } // developmentEnvironmentArgs);
       de = import ./desktop-environment/config.nix { inherit pkgs utils desktopEnvironment; };
       defaultEnvironment = import ./configs/generic.nix { inherit pkgs unstable utils inputs system; };
-      e = utils.env.concatEnvironments [ de defaultEnvironment envPackages ];
-#       emacsEnvironment = import ./emacs { inherit pkgs utils;
-#                                           extraPackages = e.emacsExtraPackages;
-#                                           extraConfigs = [e.emacsExtraConfig];
-#                                         };
+      e = utils.env.concatEnvironments [ de devEnvironment defaultEnvironment envPackages ];
       vscodeEnvironment = import ./vscode { inherit pkgs utils;
                                      userDefinedExtensions = e.vscodeExtraExtensions or (vscode-extensions: []);
                                      extraSettings = e.vscodeExtraSettings or {};

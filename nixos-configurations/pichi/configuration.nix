@@ -111,14 +111,34 @@
     vim
     wget
     git
+    neovim
+
 
     # Navegadores
     microsoft-edge
 
     # Ejemplo de cómo usar paquetes del canal unstable:
     # unstable.neovim
+    ntfs3g
+    fuse3
+    fuse
   ];
 
+  # Configuración de fuentes
+  fonts.packages = let
+    nerdfonts = with pkgs.nerd-fonts; [
+      jetbrains-mono
+    ];
+    stdfonts = with pkgs; [
+      fira-code
+      fira-code-symbols
+    ];
+  in nerdfonts ++ stdfonts;
+
+  fonts.fontconfig = {
+    enable = true;
+    antialias = true;
+  };
 
   # Configuración XDG para aplicaciones por defecto
 #   xdg.mime = {

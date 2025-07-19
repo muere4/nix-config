@@ -7,7 +7,5 @@ utils.env.packagesEnvironment (with pkgs; [
     renameutils
     rename
     cmatrix
-    ntfs3g
-    fuse3
-    fuse
+    encfs #cifra carpetas
 ])

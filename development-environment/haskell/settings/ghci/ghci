@@ -1,0 +1,7 @@
+:set prompt "λ "
+:set -XOverloadedStrings
+:set -XRankNTypes
+:set -XTypeApplications
+:set -XDataKinds
+:set -XTupleSections
+:set -XGADTs

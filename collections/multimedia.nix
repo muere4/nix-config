@@ -12,6 +12,7 @@ utils.env.simpleEnvironment {
   packages = with pkgs; [
     unstable.vlc  # Nota: ¡sigue necesitando el prefijo 'unstable'!
     ffmpeg        # Este sí viene de pkgs
+    unstable.yt-dlp
   ];
 
   imports = [];
