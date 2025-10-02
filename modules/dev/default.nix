@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ./git.nix
+    #./git.nix
+    ./git-extended.nix
     ./podman.nix
   ];
 }

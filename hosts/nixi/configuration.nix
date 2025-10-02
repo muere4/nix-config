@@ -6,6 +6,7 @@
     ../../modules/editors
     ../../modules/virtualization
     ../../modules/packages
+    ../../modules/services
   ];
 
   # Configuración básica del host
