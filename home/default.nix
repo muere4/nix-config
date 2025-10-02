@@ -7,6 +7,8 @@
     firefox
     vscode
     neofetch
+    jetbrains.rider
+    dbeaver-bin
   ];
 
   programs.bash = {

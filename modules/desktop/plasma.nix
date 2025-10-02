@@ -27,5 +27,16 @@ in
       kdePackages.kate
       kdePackages.gwenview
     ];
+
+
+    # Home Manager: atajo solo para capturar región rectangular
+    home-manager.users.muere = {
+      programs.home-manager.enable = true;
+
+      xdg.configFile."kglobalshortcutsrc".text = ''
+        [Spectacle]
+        RectangularRegionShortcut=Ctrl+ñ,none,Capture a rectangular region
+      '';
+    };
   };
 }

@@ -3,5 +3,6 @@
 {
   imports = [
     ./obs.nix
+    ./haruna.nix
   ];
 }
