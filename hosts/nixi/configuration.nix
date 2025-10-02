@@ -4,6 +4,8 @@
     ../../modules/dev
     ../../modules/desktop
     ../../modules/editors
+    ../../modules/virtualization
+    ../../modules/packages
   ];
 
   # Configuración básica del host
@@ -38,7 +40,7 @@
   console.keyMap = "es";
 
 
-  services.pulseaudio.enable = false;
+  #services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -67,6 +69,11 @@
     wget
     curl
     htop
+
+    libreoffice-fresh
+    ntfs3g
+    p7zip
+    qbittorrent
   ];
 
   # Habilitar flakes

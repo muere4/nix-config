@@ -2,8 +2,6 @@
 
 {
   imports = [
-    #./plasma.nix
-    ./gnome.nix
-    ./browsers
+    ./libvirt.nix
   ];
 }
