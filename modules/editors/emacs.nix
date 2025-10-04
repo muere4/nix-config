@@ -17,9 +17,7 @@ in
     # Paquetes a nivel de sistema
     environment.systemPackages = with pkgs; [
       emacs
-      # .NET Development
-      dotnet-sdk_8
-      omnisharp-roslyn
+
       # Build tools para vterm
       cmake
       gnumake

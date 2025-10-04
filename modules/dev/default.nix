@@ -5,5 +5,6 @@
     #./git.nix
     ./git-extended.nix
     ./podman.nix
+    ./dotnet.nix
   ];
 }

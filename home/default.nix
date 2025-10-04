@@ -5,10 +5,6 @@
 
   home.packages = with pkgs; [
     firefox
-    vscode
-    neofetch
-    jetbrains.rider
-    dbeaver-bin
     fastfetch
   ];
 
