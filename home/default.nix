@@ -9,6 +9,7 @@
     neofetch
     jetbrains.rider
     dbeaver-bin
+    fastfetch
   ];
 
   programs.bash = {
@@ -16,7 +17,7 @@
     shellAliases = {
       ll = "ls -la";
       ".." = "cd ..";
-      rebuild = "sudo nixos-rebuild switch --flake ~/nix-config#nixos";
+      rebuild = "sudo nixos-rebuild switch --flake ~/nix-config#nixi";
     };
   };
 }
