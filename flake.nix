@@ -71,6 +71,14 @@
             }
           ];
         };
+      }; # ← Cierra nixosConfigurations aquí
+
+      # Templates al mismo nivel que nixosConfigurations
+      templates = {
+        avalonia = {
+          path = ./templates/avalonia;
+          description = "Entorno de desarrollo Avalonia UI con .NET 8";
+        };
       };
     };
 }
