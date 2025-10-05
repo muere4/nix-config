@@ -7,6 +7,7 @@
     ../../modules/virtualization
     ../../modules/packages
     ../../modules/services
+    ../../modules/games
   ];
 
   # Configuración básica del host
