@@ -4,7 +4,7 @@ let
   # Configuración del módulo - EDITAR AQUÍ
   enabledHosts = [ "nixi" ];  # Hosts donde se habilita
   userName = "muere";  # Usuario que tendrá acceso a libvirt
-  
+
   # Detectar si está habilitado para este host
   enabled = builtins.elem config.networking.hostName enabledHosts;
 in
@@ -45,7 +45,6 @@ in
       spice-protocol
       win-virtio
       win-spice
-      gnome-boxes  # Alternativa más simple a virt-manager
     ];
   };
 }
