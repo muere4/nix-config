@@ -29,6 +29,7 @@ in
     ];
 
 
+
     # Home Manager: atajo solo para capturar región rectangular
     home-manager.users.muere = {
       programs.home-manager.enable = true;
@@ -37,6 +38,14 @@ in
         [Spectacle]
         RectangularRegionShortcut=Ctrl+ñ,none,Capture a rectangular region
       '';
+
+      # Asociar tipos MIME con Kate
+      xdg.mimeApps.defaultApplications = {
+        "text/plain" = [ "org.kde.kate.desktop" ];
+        "inode/directory" = [ "org.kde.dolphin.desktop" ]; # carpetas → Dolphin
+        "application/octet-stream" = [ "org.kde.kate.desktop" ]; # archivos sin tipo → Kate
+      };
+
     };
   };
 }
