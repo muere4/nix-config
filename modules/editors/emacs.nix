@@ -62,7 +62,6 @@ in
         doom = "~/.config/emacs/bin/doom";
         doom-sync = "~/.config/emacs/bin/doom sync";
         doom-doctor = "~/.config/emacs/bin/doom doctor";
-        doom-setup = "~/nix-config/config/emacs/doom-setup.sh";
         # Aliases de conveniencia como hlissner
         e = "emacsclient -n";
         ekill = "emacsclient --eval '(kill-emacs)'";
