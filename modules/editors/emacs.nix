@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-
 let
   enabledHosts = [ "nixi" ];
   userName = "muere";
@@ -7,20 +6,25 @@ let
 in
 {
   config = lib.mkIf enabled {
+    # Paquetes a nivel de sistema
     environment.systemPackages = with pkgs; [
       emacs
-      git
+
+      # Build tools para vterm
+      cmake
+      gnumake
     ];
 
     home-manager.users.${userName} = { config, ... }: {
       # Solo agregar bin al PATH, Doom usa defaults
       home.sessionPath = [ "$HOME/.config/emacs/bin" ];
 
+
+      # Paquetes para Doom Emacs
       home.packages = with pkgs; [
-        # Core dependencies
-        git
-        ripgrep
+        # Herramientas core de Doom
         fd
+        (ripgrep.override { withPCRE2 = true; })
         coreutils
         clang
 
@@ -29,7 +33,7 @@ in
         gnumake
         libtool
 
-        # Utilidades
+        # Utilidades adicionales
         shellcheck
         pandoc
         graphviz
@@ -44,28 +48,33 @@ in
         nerd-fonts.droid-sans-mono
         nerd-fonts.symbols-only
 
-        # Emacs packages (para vterm, pdf, etc)
+        # Emacs packages
         emacsPackages.vterm
         emacsPackages.pdf-tools
         emacsPackages.omnisharp
       ];
 
+      # Habilitar fontconfig
       fonts.fontconfig.enable = true;
 
+      # Emacs
       programs.emacs = {
         enable = true;
         package = pkgs.emacs;
       };
 
-      # Solo aliases útiles
+
+
+      # Aliases útiles
       programs.bash.shellAliases = {
-        doom = "~/.config/emacs/bin/doom";
-        doom-sync = "~/.config/emacs/bin/doom sync";
-        doom-doctor = "~/.config/emacs/bin/doom doctor";
-        # Aliases de conveniencia como hlissner
-        e = "emacsclient -n";
-        ekill = "emacsclient --eval '(kill-emacs)'";
+        doom = "${config.xdg.configHome}/emacs/bin/doom";
+        doom-install = "${config.xdg.configHome}/emacs/bin/doom install";
+        doom-sync = "${config.xdg.configHome}/emacs/bin/doom sync";
+        doom-upgrade = "${config.xdg.configHome}/emacs/bin/doom upgrade";
+        doom-doctor = "${config.xdg.configHome}/emacs/bin/doom doctor";
       };
+
+
     };
   };
 }
