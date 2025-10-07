@@ -2,7 +2,9 @@
 
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 doom install
+
 cp -v ~/nix-config/doom/* ~/.config/doom/
+
 doom sync
 
 
