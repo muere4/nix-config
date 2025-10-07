@@ -36,7 +36,6 @@ cat ~/.ssh/github_facusmzi.pub
 4. Probar conexión
 # Probar muere4
 ssh -T git@github.com
-# Output: Hi muere4! You've successfully authenticated...
 # Probar facusmzi
 ssh -T git@github.com-facusmzi
-# Output: Hi facusmzi! You've successfully authenticated...
+
