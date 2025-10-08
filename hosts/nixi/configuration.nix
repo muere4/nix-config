@@ -57,6 +57,11 @@
     #media-session.enable = true;
   };
 
+  # use nftables
+  networking.nftables.enable = true;
+
+
+
 
   # Usuario
   users.users.muere = {

@@ -10,6 +10,9 @@ let
 in
 {
   config = lib.mkIf enabled {
+
+    programs.gamemode.enable = true;
+
     # Paquetes a nivel de sistema
     environment.systemPackages = with pkgs; [
       lunar-client
