@@ -18,9 +18,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    # WinApps
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, winapps, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -36,6 +42,7 @@
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };  # Pasar inputs a los módulos
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
@@ -60,6 +67,7 @@
 
         nixi = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };  # Pasar inputs a los módulos
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
@@ -85,7 +93,5 @@
 
       # Templates al mismo nivel que nixosConfigurations
       templates = import ./templates/default.nix;
-
-
     };
 }

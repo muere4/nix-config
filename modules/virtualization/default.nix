@@ -3,5 +3,6 @@
 {
   imports = [
     ./libvirt.nix
+    ./winapps.nix
   ];
 }
