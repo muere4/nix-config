@@ -52,6 +52,8 @@
               home-manager.useUserPackages = true;
               home-manager.users.muere = import ./home/default.nix;
               home-manager.backupFileExtension = "backup";
+
+              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
             }
           ];
         };

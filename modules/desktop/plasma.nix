@@ -45,7 +45,6 @@ in
         panels = [
           {
             location = "bottom";
-            height = 44;
             widgets = [
               {
                 name = "org.kde.plasma.kickoff";
