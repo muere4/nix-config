@@ -73,6 +73,7 @@ in
               {
                 name = "org.kde.plasma.digitalclock";
               }
+              "org.kde.plasma.showdesktop"
             ];
           }
         ];
