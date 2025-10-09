@@ -72,6 +72,11 @@ in
               }
               {
                 name = "org.kde.plasma.digitalclock";
+                config = {
+                  Appearance = {
+                    use24hFormat = "2";
+                  };
+                };
               }
               "org.kde.plasma.showdesktop"
             ];
