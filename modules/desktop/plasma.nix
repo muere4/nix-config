@@ -9,16 +9,25 @@ let
 in
 {
   config = lib.mkIf enabled {
+
+    # Habilitar X server (requerido por SDDM en modo X11)
+    services.xserver.enable = true;
+
     # Configuración de Wayland con KDE Plasma 6
     services.desktopManager.plasma6.enable = true;
 
-    services.displayManager = {
-      sddm = {
-        enable = true;
-        wayland.enable = true;
+    services.displayManager.sddm = {
+      enable = true;
+      wayland.enable = false;
+      theme = "breeze";
+      settings = {
+        General = {
+          DisplayServer = "x11";
+        };
       };
-      defaultSession = "plasma";
     };
+
+    services.displayManager.defaultSession = "plasmax11";
 
     # Paquetes extra de KDE Plasma
     environment.systemPackages = with pkgs; [

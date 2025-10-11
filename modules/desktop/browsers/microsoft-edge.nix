@@ -12,7 +12,7 @@ in
     ];
 
     # Variables de entorno para Wayland
-    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+    #environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
     # Configuración por usuario con Home Manager
     home-manager.users.muere = {

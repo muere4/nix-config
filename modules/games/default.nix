@@ -3,5 +3,6 @@
 {
   imports = [
     ./general-games.nix
+    ./steam.nix
   ];
 }

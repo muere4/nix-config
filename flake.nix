@@ -53,7 +53,7 @@
               home-manager.users.muere = import ./home/default.nix;
               home-manager.backupFileExtension = "backup";
 
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
             }
           ];
         };
@@ -77,7 +77,7 @@
               home-manager.users.muere = import ./home/default.nix;
               home-manager.backupFileExtension = "backup";
 
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
             }
           ];
         };
