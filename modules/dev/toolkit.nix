@@ -23,6 +23,7 @@ in
         jetbrains.rider
         dbeaver-bin
         vscode
+        postgresql
       ];
     };
   };
