@@ -27,7 +27,6 @@ let
     base
     aeson
     text
-    postgresql-simple
     bytestring
     containers
     mtl
