@@ -138,3 +138,342 @@
 
 
 
+
+
+
+
+
+
+
+
+
+;; Configuración de Org Babel para código con imágenes
+(after! org
+  ;; Habilitar lenguajes para Org Babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell . t)
+     (emacs-lisp . t)
+     (dot . t)        ; Graphviz
+     (plantuml . t)   ; PlantUML (si lo usas)
+     (C . t)
+     (csharp . t)))
+
+  ;; Configuración específica para Python
+  (setq org-babel-python-command "python3")
+
+  ;; Variables de entorno para Python (Fix Wayland)
+  (setq org-babel-python-wrapper-method
+        "MPLBACKEND=Agg python3 -c '%s'")
+
+  ;; No pedir confirmación para evaluar código (opcional)
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; Configuración para imágenes inline
+  (setq org-image-actual-width '(600))  ; Ancho por defecto en píxeles
+
+  ;; Auto-mostrar imágenes al abrir archivo
+  (setq org-startup-with-inline-images t)
+
+  ;; Mostrar imágenes inline automáticamente después de ejecutar
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+  ;; Redisplay más agresivo
+  (add-hook 'org-babel-after-execute-hook
+            (lambda () (org-redisplay-inline-images)) 'append))
+
+;; Keybindings útiles
+(map! :map org-mode-map
+      :localleader
+      :desc "Toggle inline images" "i i" #'org-toggle-inline-images
+      :desc "Redisplay inline images" "i r" #'org-redisplay-inline-images
+      :desc "Execute code block" "e" #'org-babel-execute-src-block)
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;; Configuración de Org Babel para código con imágenes
+(after! org
+  ;; Habilitar lenguajes para Org Babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell . t)
+     (emacs-lisp . t)
+     (dot . t)        ; Graphviz
+     (plantuml . t)   ; PlantUML (si lo usas)
+     (C . t)
+     (csharp . t)))
+
+  ;; Configuración específica para Python
+  (setq org-babel-python-command "python3")
+
+  ;; Fix para archivos binarios en Org Babel Python
+  (setq org-babel-python-wrapper-method
+        "
+def main():
+%s
+
+if __name__ == '__main__':
+    main()")
+
+  (setq org-babel-python-pp-wrapper-method
+        "
+import pprint
+def main():
+%s
+
+if __name__ == '__main__':
+    main()")
+
+  ;; No pedir confirmación para evaluar código (opcional)
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; Configuración para imágenes inline
+  (setq org-image-actual-width '(600))  ; Ancho por defecto en píxeles
+
+  ;; Auto-mostrar imágenes al abrir archivo
+  (setq org-startup-with-inline-images t)
+
+  ;; Mostrar imágenes inline automáticamente después de ejecutar
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+  ;; Redisplay más agresivo
+  (add-hook 'org-babel-after-execute-hook
+            (lambda () (org-redisplay-inline-images)) 'append))
+
+;; Keybindings útiles
+(map! :map org-mode-map
+      :localleader
+      :desc "Toggle inline images" "i i" #'org-toggle-inline-images
+      :desc "Redisplay inline images" "i r" #'org-redisplay-inline-images
+      :desc "Execute code block" "e" #'org-babel-execute-src-block)
+
+;; Autocompletado en bloques de código
+(after! org
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-fontify-natively t)
+  (setq org-src-preserve-indentation t))
+
+;; Habilitar company en org-src blocks
+(add-hook 'org-mode-hook
+          (lambda ()
+            (set (make-local-variable 'company-backends)
+                 '((company-capf company-dabbrev-code company-files)))))
+
+;; Snippet personalizado para matplotlib
+(after! org
+  (defun my/org-insert-matplotlib-block ()
+    "Inserta un bloque de código Python con matplotlib configurado."
+    (interactive)
+    (let ((filename (read-string "Nombre del archivo (sin .png): " "grafico")))
+      (insert (format "#+begin_src python :results none
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
+# Tu código aquí
+
+plt.savefig('%s.png', dpi=150, bbox_inches='tight')
+plt.close()
+#+end_src
+
+#+RESULTS:
+
+[[file:%s.png]]" filename filename))
+      (forward-line -7)
+      (end-of-line)))
+
+  (map! :map org-mode-map
+        :localleader
+        :desc "Insert matplotlib block" "i p" #'my/org-insert-matplotlib-block))
+
+
+
+
+
+;;; ============================================================================
+;;; HASKELL CONFIGURATION
+;;; ============================================================================
+;; ============================================================================
+;; Configuración de Haskell con LSP (haskell-language-server)
+;; ============================================================================
+
+(after! haskell-mode
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; FORMATEADOR: Fourmolu (como Rebecca)
+  ;; ──────────────────────────────────────────────────────────────────────────
+  (setq haskell-formatter-command "fourmolu")
+
+  ;; Formatear en save (opcional, descomenta si quieres)
+  ;; (add-hook 'haskell-mode-hook
+  ;;           (lambda () (add-hook 'before-save-hook #'haskell-format-buffer nil t)))
+
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; VISUAL: Rainbow delimiters y line numbers (como Rebecca)
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; Rainbow delimiters (solo si está disponible)
+  (when (featurep 'rainbow-delimiters)
+    (add-hook 'haskell-mode-hook #'rainbow-delimiters-mode))
+
+  (add-hook 'haskell-mode-hook #'display-line-numbers-mode)
+
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; KEYBINDINGS LOCALES (estilo Rebecca)
+  ;; ──────────────────────────────────────────────────────────────────────────
+  (map! :map haskell-mode-map
+        :localleader
+        ;; Formateo
+        :desc "Format buffer" "=" #'haskell-format-buffer
+
+        ;; REPL/Interactive (heredado de haskell-mode)
+        :desc "Load file in REPL" "l" #'haskell-process-load-file
+        :desc "Switch to REPL" "z" #'haskell-interactive-switch
+
+        ;; Type info (usando haskell-mode, no LSP)
+        (:prefix ("n" . "info")
+         :desc "Type at point" "t" #'haskell-process-do-type
+         :desc "Info at point" "i" #'haskell-process-do-info)
+
+        ;; Build
+        (:prefix ("c" . "cabal")
+         :desc "Build" "b" #'haskell-process-cabal-build
+         :desc "Cabal" "c" #'haskell-process-cabal))
+
+  ;; Navegación de S-expressions (como Rebecca)
+  (map! :map haskell-mode-map
+        :n "C-)" #'forward-sexp
+        :n "C-(" #'backward-sexp)
+
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; CONFIGURACIÓN DEL PROCESO INTERACTIVO (como Rebecca)
+  ;; ──────────────────────────────────────────────────────────────────────────
+  (setq haskell-process-suggest-remove-import-lines t
+        haskell-process-auto-import-loaded-modules t
+        haskell-process-log t
+        haskell-tags-on-save nil) ; Tags desactivados (usa LSP)
+
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; CABAL MODE (como Rebecca)
+  ;; ──────────────────────────────────────────────────────────────────────────
+  (map! :map haskell-cabal-mode-map
+        :localleader
+        :desc "Switch to REPL" "z" #'haskell-interactive-switch
+        :desc "Clear REPL" "k" #'haskell-interactive-mode-clear
+        :desc "Build" "c" #'haskell-process-cabal-build
+        :desc "Cabal command" "C" #'haskell-process-cabal)
+
+  ;; S-expressions para cabal también
+  (map! :map haskell-cabal-mode-map
+        :n "C-)" #'forward-sexp
+        :n "C-(" #'backward-sexp))
+
+;; ============================================================================
+;; LSP MODE PARA HASKELL (HLS)
+;; ============================================================================
+;; IMPORTANTE: Usar use-package! en lugar de after! para mejor control
+(use-package! lsp-haskell
+  :after lsp-mode
+  :config
+  ;; ──────────────────────────────────────────────────────────────────────────
+  ;; CONFIGURACIÓN DE HLS
+  ;; ──────────────────────────────────────────────────────────────────────────
+  (setq lsp-haskell-server-path "haskell-language-server-wrapper")
+
+  ;; Performance (como tu config de C#)
+  (setq lsp-idle-delay 0.1
+        lsp-log-io nil) ; Activa para debug
+
+  ;; Completado
+  (setq lsp-completion-enable t
+        lsp-completion-show-detail t
+        lsp-completion-show-kind t)
+
+  ;; HLS-specific settings
+  (setq lsp-haskell-formatting-provider "fourmolu") ; Usa fourmolu desde HLS
+
+  ;; Plugin settings (ajusta según necesites)
+  (setq lsp-haskell-plugin-ghcide-type-lenses-global-on nil)) ; Desactiva type lenses si molestan
+
+;; Forzar LSP en haskell-mode
+(add-hook! 'haskell-mode-hook
+  (defun +haskell-lsp-setup-h ()
+    "Forzar inicio de LSP en Haskell."
+    (when (and (bound-and-true-p lsp-mode)
+               (not lsp--buffer-workspaces))
+      (lsp-deferred))))
+
+;; Asegurar que lsp! se ejecute
+(add-hook 'haskell-mode-hook #'lsp! 'append)
+(add-hook 'haskell-literate-mode-hook #'lsp! 'append)
+
+;; ============================================================================
+;; LSP-UI (interfaz visual para LSP)
+;; ============================================================================
+(after! lsp-ui
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-show-with-cursor t
+        lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-show-diagnostics t))
+
+;; ============================================================================
+;; COMPANY MODE (autocompletado - como tu config de C#)
+;; ============================================================================
+(after! company
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 1
+        company-show-numbers t))
+
+;; ============================================================================
+;; UTILIDADES ADICIONALES
+;; ============================================================================
+
+;; Función para formatear buffer con fourmolu
+(defun haskell-format-buffer ()
+  "Format current buffer with fourmolu."
+  (interactive)
+  (let ((p (point)))
+    (shell-command-on-region (point-min) (point-max)
+                             haskell-formatter-command
+                             nil t)
+    (goto-char p)))
+
+;; Función para ver tipo en punto actual (fallback si HLS no responde)
+(defun haskell-show-type-fallback ()
+  "Show type at point using haskell-mode if LSP fails."
+  (interactive)
+  (condition-case nil
+      (lsp-describe-thing-at-point)
+    (error (haskell-process-do-type))))
+
+;; ============================================================================
+;; KEYBINDINGS GLOBALES PARA HASKELL
+;; ============================================================================
+(map! :after haskell-mode
+      :map haskell-mode-map
+      :localleader
+      ;; Quick access
+      :desc "Type at point (LSP)" "t" #'lsp-describe-thing-at-point
+      :desc "Find definition" "d" #'lsp-find-definition
+      :desc "Find references" "r" #'lsp-find-references
+      :desc "Rename" "R" #'lsp-rename)
+
+;; ============================================================================
+;; HOOKS FINALES
+;; ============================================================================
+(add-hook! 'haskell-mode-hook
+  ;; Auto-completado agresivo
+  (setq-local company-idle-delay 0.1)
+
+  ;; Columna de 80 caracteres (como Rebecca)
+  ;;(setq-local fill-column 80)
+
+  ;; Mostrar columna
+  ;;(display-fill-column-indicator-mode 1))
