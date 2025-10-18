@@ -10,24 +10,21 @@ in
 {
   config = lib.mkIf enabled {
 
-    # Habilitar X server (requerido por SDDM en modo X11)
-    services.xserver.enable = true;
-
     # Configuración de Wayland con KDE Plasma 6
     services.desktopManager.plasma6.enable = true;
 
     services.displayManager.sddm = {
       enable = true;
-      wayland.enable = false;
+      wayland.enable = true;
       theme = "breeze";
       settings = {
         General = {
-          DisplayServer = "x11";
+          DisplayServer = "wayland";
         };
       };
     };
 
-    services.displayManager.defaultSession = "plasmax11";
+    services.displayManager.defaultSession = "plasma";
 
     # Paquetes extra de KDE Plasma
     environment.systemPackages = with pkgs; [
@@ -35,6 +32,7 @@ in
       kdePackages.dolphin
       kdePackages.kate
       kdePackages.gwenview
+      kdePackages.spectacle  # Agregar explícitamente
     ];
 
     # Home Manager con plasma-manager
@@ -45,9 +43,28 @@ in
       programs.plasma = {
         enable = true;
 
-        # Configuración de Spectacle
+        # IMPORTANTE: Deshabilitar los shortcuts por defecto de Spectacle
         spectacle.shortcuts = {
-          captureRectangularRegion = "Ctrl+ñ";
+          captureEntireDesktop = "";
+          captureRectangularRegion = "Ctrl+Ñ";
+          launch = "";
+          recordRegion = "";
+          recordScreen = "";
+          recordWindow = "";
+        };
+
+        # Definir los comandos personalizados con hotkeys
+        hotkeys.commands = {
+#           screenshot-region = {
+#             name = "Captura rectangular de pantalla";
+#             key = "Ctrl+Ñ";  # o el que prefieras
+#             command = "spectacle --region --nonotify";
+#           };
+          screenshot-fullscreen = {
+            name = "Captura pantalla completa";
+            key = "Meta+Ctrl+S";
+            command = "spectacle --fullscreen --nonotify";
+          };
         };
 
         # Configuración del panel inferior con gestor de tareas
@@ -72,11 +89,14 @@ in
               }
               "org.kde.plasma.marginsseparator"
               {
-                systemTray.items = {
-                  shown = [
-                    "org.kde.plasma.networkmanagement"
-                    "org.kde.plasma.volume"
-                  ];
+                name = "org.kde.plasma.systemtray";
+                config = {
+                  General = {
+                    shown = [
+                      "org.kde.plasma.networkmanagement"
+                      "org.kde.plasma.volume"
+                    ];
+                  };
                 };
               }
               {
