@@ -20,9 +20,9 @@ in
         enable = true;
         
         # Aceleración de hardware para Intel
-        #package = pkgs.obs-studio.override {
-          #waylandSupport = true;  # Si usas Wayland
-        #};
+#         package = pkgs.obs-studio.override {
+#            waylandSupport = true;  # Si usas Wayland
+#         };
         
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs                        # Captura de pantalla para Wayland
@@ -31,6 +31,7 @@ in
           obs-vaapi                     # Aceleración hardware Intel (VA-API)
           obs-gstreamer                 # Soporte GStreamer
           obs-vkcapture                 # Captura Vulkan para juegos
+          droidcam-obs
         ];
       };
     };
