@@ -4,6 +4,7 @@
   imports = [
     ./plasma.nix
     #./gnome.nix
+    ./niri
     ./browsers
   ];
 }
