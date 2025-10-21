@@ -1,5 +1,4 @@
-// Configuración de Niri
-// Basada en: https://github.com/YaLTeR/niri/blob/main/resources/default-config.kdl
+// Configuración de Niri con Noctalia
 
 // ============================================================================
 // INPUT - Teclado y touchpad
@@ -27,12 +26,6 @@ input {
         accel-profile "flat"
     }
 
-    // Mapeo de trackpoint (si tienes)
-    // trackpoint {
-    //     accel-speed 0.0
-    //     accel-profile "flat"
-    // }
-
     tablet {
         map-to-output "eDP-1"
     }
@@ -46,18 +39,9 @@ input {
 // OUTPUTS - Configuración de pantallas
 // ============================================================================
 
-// Pantalla principal (ajusta según tu hardware)
 output "eDP-1" {
     scale 1.0
-    // transform "normal"
-    // position x=0 y=0
 }
-
-// Ejemplo para pantalla externa
-// output "HDMI-A-1" {
-//     scale 1.0
-//     position x=1920 y=0
-// }
 
 // ============================================================================
 // LAYOUT - Disposición de ventanas
@@ -65,7 +49,6 @@ output "eDP-1" {
 layout {
     gaps 16
 
-    // Opciones: "never" | "on-overflow" | "always"
     center-focused-column "never"
 
     preset-column-widths {
@@ -78,20 +61,12 @@ layout {
 
     focus-ring {
         width 4
-
         active-color "#7fc8ff"
         inactive-color "#505050"
-
-        // active-gradient from="#80c8ff" to="#bbddff" angle=45
-        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
     }
 
     border {
         off
-
-        // width 4
-        // active-color "#ffc87f"
-        // inactive-color "#505050"
     }
 
     struts {
@@ -103,27 +78,22 @@ layout {
 }
 
 // ============================================================================
-// SPAWN AT STARTUP - Aplicaciones al iniciar
+// SPAWN AT STARTUP
 // ============================================================================
-spawn-at-startup "waybar"
+spawn-at-startup "noctalia-shell"
 spawn-at-startup "swaybg" "-i" "/home/muere/wallpaper.png"
-spawn-at-startup "mako"
-
-// Ejemplo: auto-lock después de inactividad
-// spawn-at-startup "swayidle" "-w" "timeout" "600" "swaylock" "timeout" "900" "niri msg action power-off-monitors"
 
 // ============================================================================
 // ENVIRONMENT - Variables de entorno
 // ============================================================================
 environment {
-    // Hints para aplicaciones
     QT_QPA_PLATFORM "wayland"
     SDL_VIDEODRIVER "wayland"
     NIXOS_OZONE_WL "1"
 }
 
 // ============================================================================
-// CURSOR - Configuración del cursor
+// CURSOR
 // ============================================================================
 cursor {
     xcursor-theme "Adwaita"
@@ -131,24 +101,24 @@ cursor {
 }
 
 // ============================================================================
-// PREFER NO CSD - Decoraciones del lado del servidor
+// PREFER NO CSD
 // ============================================================================
 prefer-no-csd
 
 // ============================================================================
-// SCREENSHOT PATH - Ruta para capturas
+// SCREENSHOT PATH
 // ============================================================================
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 // ============================================================================
-// HOTKEY OVERLAY - Mostrar shortcuts
+// HOTKEY OVERLAY
 // ============================================================================
 hotkey-overlay {
     skip-at-startup
 }
 
 // ============================================================================
-// ANIMATIONS - Animaciones de ventanas
+// ANIMATIONS
 // ============================================================================
 animations {
     slowdown 1.0
@@ -185,27 +155,26 @@ animations {
 }
 
 // ============================================================================
-// WINDOW RULES - Reglas específicas por ventana
-// ============================================================================
-
-// Ejemplo: hacer flotante una ventana específica
-// window-rule {
-//     match app-id="org.kde.dolphin"
-//     default-column-width { fixed 1200; }
-// }
-
-// Ejemplo: abrir en workspace específico
-// window-rule {
-//     match title=".*YouTube.*"
-//     open-on-workspace "browser"
-// }
-
-// ============================================================================
 // BINDS - Atajos de teclado
 // ============================================================================
 binds {
-    // Modificador principal (Super/Windows key)
     Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // ========================================================================
+    // NOCTALIA - Controles del panel
+    // ========================================================================
+
+    // Launcher de aplicaciones
+    Mod+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+
+    // Control Center (configuración rápida)
+    Mod+Shift+Space { spawn "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+
+    // Panel lateral
+    Mod+N { spawn "noctalia-shell" "ipc" "call" "sidePanel" "toggle"; }
+
+    // Lock Screen
+    Mod+Alt+L { spawn "noctalia-shell" "ipc" "call" "lockScreen" "toggle"; }
 
     // ========================================================================
     // APLICACIONES
@@ -213,11 +182,7 @@ binds {
     Mod+T { spawn "alacritty"; }
     Mod+D { spawn "fuzzel"; }
     Mod+Return { spawn "alacritty"; }
-
-    // Navegador
     Mod+B { spawn "microsoft-edge"; }
-
-    // File manager
     Mod+E { spawn "dolphin"; }
 
     // Screenshots
@@ -227,7 +192,6 @@ binds {
     // ========================================================================
     // SISTEMA
     // ========================================================================
-    Mod+Alt+L { spawn "swaylock"; }
 
     // Salir de Niri
     Mod+Shift+E { quit skip-confirmation=true; }
@@ -239,8 +203,6 @@ binds {
     // VENTANAS
     // ========================================================================
     Mod+Q { close-window; }
-
-    // Fullscreen
     Mod+F { fullscreen-window; }
     Mod+Shift+F { maximize-column; }
 
@@ -257,7 +219,6 @@ binds {
     Mod+Down  { focus-window-down; }
     Mod+Up    { focus-window-up; }
 
-    // Primera/última columna
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }
 
@@ -290,11 +251,8 @@ binds {
     Mod+8 { focus-workspace 8; }
     Mod+9 { focus-workspace 9; }
 
-    // Workspace anterior/siguiente
     Mod+Page_Down { focus-workspace-down; }
     Mod+Page_Up   { focus-workspace-up; }
-
-    // Ir al anterior workspace visitado
     Mod+Tab { focus-workspace-previous; }
 
     // ========================================================================
@@ -339,34 +297,28 @@ binds {
     Mod+Ctrl+Shift+Up    { move-column-to-monitor-up; }
 
     // ========================================================================
-    // MEDIA KEYS - Control multimedia
+    // MEDIA KEYS - Control multimedia (manejado por Noctalia)
     // ========================================================================
-    XF86AudioRaiseVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-    XF86AudioLowerVolume { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
-    XF86AudioMute        { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    XF86AudioMicMute     { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86AudioRaiseVolume { spawn "noctalia-shell" "ipc" "call" "volume" "increase"; }
+    XF86AudioLowerVolume { spawn "noctalia-shell" "ipc" "call" "volume" "decrease"; }
+    XF86AudioMute        { spawn "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
+    XF86AudioMicMute     { spawn "noctalia-shell" "ipc" "call" "volume" "muteInput"; }
 
-    XF86MonBrightnessUp   { spawn "brightnessctl" "set" "10%+"; }
-    XF86MonBrightnessDown { spawn "brightnessctl" "set" "10%-"; }
+    XF86MonBrightnessUp   { spawn "noctalia-shell" "ipc" "call" "brightness" "increase"; }
+    XF86MonBrightnessDown { spawn "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
 
     // Media controls
-    XF86AudioPlay  { spawn "playerctl" "play-pause"; }
-    XF86AudioPause { spawn "playerctl" "play-pause"; }
-    XF86AudioNext  { spawn "playerctl" "next"; }
-    XF86AudioPrev  { spawn "playerctl" "previous"; }
+    XF86AudioPlay  { spawn "noctalia-shell" "ipc" "call" "media" "playPause"; }
+    XF86AudioPause { spawn "noctalia-shell" "ipc" "call" "media" "playPause"; }
+    XF86AudioNext  { spawn "noctalia-shell" "ipc" "call" "media" "next"; }
+    XF86AudioPrev  { spawn "noctalia-shell" "ipc" "call" "media" "previous"; }
 
     // ========================================================================
-    // POWER - Apagar monitors
+    // POWER
     // ========================================================================
     Mod+Shift+P { power-off-monitors; }
 }
 
-// ============================================================================
-// DEBUG - Opciones de depuración
-// ============================================================================
 debug {
-    // wait-for-frame-completion-before-queueing
-    // render-drm-device "/dev/dri/renderD129"
-    // dbus-interfaces-in-non-session-instances
-    // disable-cursor-plane
+    // Opciones de debug si las necesitas
 }

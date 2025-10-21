@@ -18,9 +18,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    # Noctalia y dependencias
+    quickshell = {
+      url = "github:outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.quickshell.follows = "quickshell";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, quickshell, noctalia, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -36,6 +48,7 @@
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
@@ -60,6 +73,7 @@
 
         nixi = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
@@ -81,11 +95,9 @@
             }
           ];
         };
-      }; # ← Cierra nixosConfigurations aquí
+      };
 
       # Templates al mismo nivel que nixosConfigurations
       templates = import ./templates/default.nix;
-
-
     };
 }
