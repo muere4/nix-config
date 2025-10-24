@@ -2,28 +2,44 @@
 let
   # Lista de hosts donde quieres habilitar OBS
   enabledHosts = [ "nixi" ];
-  
+
   # Verificar si el hostname actual está en la lista
   isEnabled = builtins.elem config.networking.hostName enabledHosts;
 in
 {
   config = lib.mkIf isEnabled {
+
+    boot.extraModulePackages = with config.boot.kernelPackages; [
+      v4l2loopback
+    ];
+
+    boot.kernelModules = [ "v4l2loopback" ];
+
+    # Crear dispositivo para OBS Virtual Camera en /dev/video10
+    boot.extraModprobeConfig = ''
+      options v4l2loopback devices=1 video_nr=10 card_label="OBS Virtual Camera" exclusive_caps=1 max_buffers=2
+    '';
+
     # Habilitar cámara virtual para OBS y Droidcam
     programs.obs-studio.enableVirtualCamera = true;
-    
+
     # Habilitar Droidcam
-    programs.droidcam.enable = true;
-    
+    #programs.droidcam.enable = true;
+
+    # Asegurar que el usuario esté en el grupo video
+    users.users.muere.extraGroups = [ "video" ];
+
+
     # Configuración de Home Manager
     home-manager.users.muere = {
       programs.obs-studio = {
         enable = true;
-        
+
         # Aceleración de hardware para Intel
 #         package = pkgs.obs-studio.override {
 #            waylandSupport = true;  # Si usas Wayland
 #         };
-        
+
         plugins = with pkgs.obs-studio-plugins; [
           wlrobs                        # Captura de pantalla para Wayland
           obs-backgroundremoval         # Remover fondo con IA
