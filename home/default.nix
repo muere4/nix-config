@@ -7,6 +7,7 @@
     firefox
     fastfetch
     discord-ptb
+    kdePackages.kdenlive
   ];
 
 
