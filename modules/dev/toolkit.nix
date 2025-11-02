@@ -12,7 +12,6 @@ in
   config = lib.mkIf enabled {
     # Paquetes a nivel de sistema
     environment.systemPackages = with pkgs; [
-      jetbrains.rider
       dbeaver-bin
     ];
 
@@ -20,7 +19,6 @@ in
     home-manager.users.${userName} = { config, ... }: {
       # Paquetes específicos del usuario
       home.packages = with pkgs; [
-        jetbrains.rider
         dbeaver-bin
         vscode
       ];
