@@ -13,8 +13,18 @@
   # Configuración básica del host
   networking.hostName = "nixi";
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot"; # Asegúrate que coincida con tu partición EFI
+    };
+    grub = {
+      enable = true;
+      device = "nodev"; # Para UEFI
+      efiSupport = true;
+      useOSProber = true; # Detecta otros sistemas operativos
+    };
+  };
 
   networking.networkmanager.enable = true;
 

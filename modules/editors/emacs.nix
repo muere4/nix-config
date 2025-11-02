@@ -53,6 +53,9 @@ in
         emacsPackages.vterm
         emacsPackages.pdf-tools
         emacsPackages.omnisharp
+
+        # latex
+        texlive.combined.scheme-full
       ];
 
       # Habilitar fontconfig
