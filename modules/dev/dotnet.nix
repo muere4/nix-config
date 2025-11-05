@@ -32,7 +32,6 @@ let
     targetPkgs = pkgs: (with pkgs; [
       # .NET combinado con soporte para workloads
       dotnet-combined
-      #jetbrains.rider
 
       # Runtimes adicionales
       dotnetCorePackages.aspnetcore_8_0
@@ -146,6 +145,22 @@ in
 
     # Configuración de Home Manager
     home-manager.users.${userName} = { config, ... }: {
+      # Crear el .desktop para Rider FHS
+      xdg.dataFile."applications/jetbrains-rider.desktop".text = ''
+        [Desktop Entry]
+        Version=1.0
+        Type=Application
+        Name=JetBrains Rider
+        Icon=rider
+        Exec=${rider-fhs}/bin/rider %f
+        Comment=Cross-platform .NET IDE
+        Categories=Development;IDE;
+        Terminal=false
+        StartupWMClass=jetbrains-rider
+        StartupNotify=true
+        MimeType=text/plain;text/x-csharp;application/x-sln;application/x-csproj;
+      '';
+
       # Paquetes específicos del usuario
       home.packages = with pkgs; [
         # .NET combinado con soporte para workloads
@@ -280,8 +295,6 @@ in
         # Rider FHS
         rider = "rider-fhs";
       };
-
-
 
       # Configuración de NuGet optimizada
       xdg.configFile."NuGet/NuGet.Config".text = ''
