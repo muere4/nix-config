@@ -8,6 +8,8 @@
     fastfetch
     discord-ptb
     kdePackages.kdenlive
+    ciscoPacketTracer8
+    stremio
   ];
 
 
