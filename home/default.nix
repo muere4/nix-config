@@ -6,10 +6,8 @@
   home.packages = with pkgs; [
     firefox
     fastfetch
-    discord-ptb
+    discord
     kdePackages.kdenlive
-    ciscoPacketTracer8
-    stremio
   ];
 
 

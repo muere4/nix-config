@@ -22,7 +22,21 @@
       enable = true;
       device = "nodev"; # Para UEFI
       efiSupport = true;
-      useOSProber = true; # Detecta otros sistemas operativos
+      #useOSProber = true; # Detecta otros sistemas operativos
+
+      # Entradas manuales para dual/triple boot
+      extraEntries = ''
+        menuentry "Windows 10" {
+          insmod part_gpt
+          insmod fat
+          insmod ntfs
+          insmod chain
+          set root='hd0,gpt1'
+          search --no-floppy --fs-uuid --set=root 8B20-9D40
+          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
+
     };
   };
 
