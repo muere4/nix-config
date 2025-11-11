@@ -14,6 +14,8 @@
   networking.hostName = "nixi";
 
   boot.loader = {
+    timeout = 30;
+
     efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot"; # Asegúrate que coincida con tu partición EFI
@@ -35,8 +37,16 @@
           search --no-floppy --fs-uuid --set=root 8B20-9D40
           chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         }
-      '';
 
+        menuentry "Fedora" {
+          insmod part_gpt
+          insmod fat
+          insmod chain
+          set root='hd0,gpt1'
+          search --no-floppy --fs-uuid --set=root 8B20-9D40
+          chainloader /EFI/fedora/shimx64.efi
+        }
+      '';
     };
   };
 

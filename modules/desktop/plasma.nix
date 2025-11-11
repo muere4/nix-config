@@ -43,6 +43,10 @@ in
       programs.plasma = {
         enable = true;
 
+        workspace = {
+          lookAndFeel = "org.kde.breezedark.desktop";
+        };
+
         # IMPORTANTE: Deshabilitar los shortcuts por defecto de Spectacle
         spectacle.shortcuts = {
           captureEntireDesktop = "";
@@ -82,7 +86,7 @@ in
                     launchers = [
                       "applications:org.kde.konsole.desktop"
                       "applications:org.kde.dolphin.desktop"
-                      "applications:microsoft-edge.desktop"
+                      "applications:firefox.desktop"
                     ];
                   };
                 };
