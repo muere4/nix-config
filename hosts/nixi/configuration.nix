@@ -92,6 +92,8 @@
   };
 
   # firewall?
+  networking.firewall.enable = true;
+
 
 
 
