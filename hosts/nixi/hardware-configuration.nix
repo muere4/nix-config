@@ -13,19 +13,57 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/aab687f5-3d17-49cf-a894-a1fb98a69ebd";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@" "compress=zstd" "noatime" "space_cache=v2" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E327-C012";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@home" "compress=zstd" "noatime" ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@nix" "compress=zstd" "noatime" ];
+  };
+
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@log" "compress=zstd" "noatime" ];
+    neededForBoot = true;
+  };
+
+  fileSystems."/var/cache" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@cache" "compress=zstd" "noatime" ];
+  };
+
+  fileSystems."/var/lib/libvirt" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@libvirt" "compress=zstd" "noatime" "nodatacow" ];
+  };
+
+  fileSystems."/var/tmp" = {
+    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
+    fsType = "btrfs";
+    options = [ "subvol=@/var/tmp" "compress=zstd" "noatime" ];
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/91FF-3E28";
+    fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
+  };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/dd7fa9d5-c374-4b38-9859-e0198079e3fd"; }
+    [ { device = "/dev/disk/by-uuid/236b622d-47f6-4f0d-9ceb-3b883d092390"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

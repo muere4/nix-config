@@ -12,6 +12,14 @@
 
   # Configuración básica del host
   networking.hostName = "nixi";
+  
+  # Scrubbing automático de Btrfs
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+    fileSystems = [ "/" ];
+  };
+  
 
   boot.loader = {
     timeout = 30;
