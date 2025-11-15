@@ -7,6 +7,7 @@
     fastfetch
     discord
     kdePackages.kdenlive
+    vlc
   ];
 
 
