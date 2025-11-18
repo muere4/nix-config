@@ -8,6 +8,7 @@
     discord
     kdePackages.kdenlive
     vlc
+    vlc-bittorrent
   ];
 
 

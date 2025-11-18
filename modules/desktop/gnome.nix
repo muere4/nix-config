@@ -3,6 +3,12 @@ let
   # Configuración del módulo - EDITAR AQUÍ
   enabledHosts = [ "nixi" ]; # Solo en nixos
   userName = "muere";
+
+  # Script wrapper para Flameshot con Wayland
+  flameshot-gui = pkgs.writeShellScriptBin "flameshot-gui" ''
+    QT_QPA_PLATFORM=wayland ${pkgs.flameshot}/bin/flameshot gui
+  '';
+
   # Detectar si está habilitado para este host
   enabled = builtins.elem config.networking.hostName enabledHosts;
 in
@@ -13,13 +19,13 @@ in
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
     };
-    
+
     environment.gnome.excludePackages = with pkgs; [
       gnome-tour
       epiphany
       geary
     ];
-    
+
     environment.systemPackages = with pkgs; [
       gnome-tweaks
       gnomeExtensions.appindicator
@@ -33,12 +39,15 @@ in
       gnomeExtensions.caffeine
       gnomeExtensions.user-themes
       # Capturas de pantalla
+
+      flameshot-gui  # Script wrapper con Wayland
       flameshot
       # Necesario para Flameshot en Wayland
-      xdg-desktop-portal
-      xdg-desktop-portal-gnome
+      #xdg-desktop-portal
+      #xdg-desktop-portal-gnome
+      qt5.qtwayland  # Dependencia para Qt en Wayland
     ];
-    
+
     # Configurar asociaciones de archivos por defecto
     xdg.mime = {
       enable = true;
@@ -76,7 +85,7 @@ in
           accent-color = "purple";  # GNOME 47+
         };
 
-        
+
         # Atajos de teclado personalizados para Flameshot
         "org/gnome/settings-daemon/plugins/media-keys" = {
           custom-keybindings = [
@@ -86,13 +95,10 @@ in
 
         "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/flameshot" = {
           name = "Flameshot";
-          # Usar script wrapper para Wayland
-          command = "sh -c 'QT_QPA_PLATFORM=wayland flameshot gui'";
+          command = "${flameshot-gui}/bin/flameshot-gui";
           binding = "<Control>ntilde";  # Ctrl+Ñ
         };
       };
-
-     
     };
   };
 }
