@@ -13,57 +13,56 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@" "compress=zstd" "noatime" "space_cache=v2" ];
-  };
+  fileSystems."/" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@" "compress=zstd" "noatime" "space_cache=v2" ];
+    };
 
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@home" "compress=zstd" "noatime" ];
-  };
+  fileSystems."/home" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@home" "compress=zstd" "noatime" ];
+    };
 
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@nix" "compress=zstd" "noatime" ];
-  };
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@nix" "compress=zstd" "noatime" ];
+    };
 
-  fileSystems."/var/log" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@log" "compress=zstd" "noatime" ];
-    neededForBoot = true;
-  };
+  fileSystems."/var/log" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@log" "compress=zstd" "noatime" ];
+    };
 
-  fileSystems."/var/cache" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@cache" "compress=zstd" "noatime" ];
-  };
+  fileSystems."/var/cache" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@cache" "compress=zstd" "noatime" ];
+    };
 
-  fileSystems."/var/lib/libvirt" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@libvirt" "compress=zstd" "noatime" "nodatacow" ];
-  };
+  fileSystems."/var/lib/libvirt" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@libvirt" "compress=zstd" "noatime" "nodatacow" ];
+    };
 
-  fileSystems."/var/tmp" = {
-    device = "/dev/disk/by-uuid/0a928ab5-78bc-44c4-9906-f076edf6ab97";
-    fsType = "btrfs";
-    options = [ "subvol=@/var/tmp" "compress=zstd" "noatime" ];
-  };
+  fileSystems."/var/tmp" =
+    { device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [ "subvol=@/var/tmp" "compress=zstd" "noatime" ];
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/91FF-3E28";
-    fsType = "vfat";
-    options = [ "fmask=0077" "dmask=0077" ];
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-label/BOOT";
+      fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
+    };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/236b622d-47f6-4f0d-9ceb-3b883d092390"; }
+    [ { device = "/dev/disk/by-label/swap"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
