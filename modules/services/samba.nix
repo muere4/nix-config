@@ -3,7 +3,7 @@
 let
   # Hosts en los que este módulo estará habilitado
   enabledHosts = [ "nixos" "nixi" ];
-  userName = "muere";
+  userName = "muere"; # sudo smbpasswd -a muere
 
   # Detectar si este host está habilitado
   enabled = builtins.elem config.networking.hostName enabledHosts;
