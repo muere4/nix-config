@@ -9,6 +9,7 @@
     kdePackages.kdenlive
     vlc
     vlc-bittorrent
+    firefox
   ];
 
 

@@ -2,10 +2,9 @@
 
 {
   imports = [
-    #./plasma.nix
-    #./niri
+    ./plasma.nix
     #./cosmic.nix
-    ./gnome.nix
+    #./gnome.nix
     ./browsers
   ];
 }
