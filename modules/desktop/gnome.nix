@@ -1,24 +1,21 @@
 { config, pkgs, lib, ... }:
 let
-  # Configuración del módulo - EDITAR AQUÍ
-  enabledHosts = [ "nixi" ]; # Solo en nixos
+  enabledHosts = [ "nixi" ];
   userName = "muere";
 
-  # Script wrapper para Flameshot con Wayland
   flameshot-gui = pkgs.writeShellScriptBin "flameshot-gui" ''
     QT_QPA_PLATFORM=wayland ${pkgs.flameshot}/bin/flameshot gui
   '';
 
-  # Detectar si está habilitado para este host
   enabled = builtins.elem config.networking.hostName enabledHosts;
 in
 {
   config = lib.mkIf enabled {
-    services.xserver = {
-      enable = true;
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-    };
+    services.xserver.enable = true;
+    
+    # ← NUEVAS LÍNEAS (reemplazar las viejas)
+    services.displayManager.gdm.enable = true;
+    services.desktopManager.gnome.enable = true;
 
     environment.gnome.excludePackages = with pkgs; [
       gnome-tour
@@ -38,17 +35,11 @@ in
       gnomeExtensions.transparent-window-moving
       gnomeExtensions.caffeine
       gnomeExtensions.user-themes
-      # Capturas de pantalla
-
-      flameshot-gui  # Script wrapper con Wayland
+      flameshot-gui
       flameshot
-      # Necesario para Flameshot en Wayland
-      #xdg-desktop-portal
-      #xdg-desktop-portal-gnome
-      qt5.qtwayland  # Dependencia para Qt en Wayland
+      qt5.qtwayland
     ];
 
-    # Configurar asociaciones de archivos por defecto
     xdg.mime = {
       enable = true;
       defaultApplications = {
@@ -70,23 +61,17 @@ in
       };
     };
 
-    # Variables de entorno para mejorar rendimiento
     environment.variables = {
       GSK_RENDERER = "ngl";
     };
 
-    # Configuración de Home Manager para temas
     home-manager.users.${userName} = { config, ... }: {
-      # Tema oscuro y color de acento morado
       dconf.settings = {
-        # Tema de color (oscuro) y acento
         "org/gnome/desktop/interface" = {
           color-scheme = "prefer-dark";
-          accent-color = "purple";  # GNOME 47+
+          accent-color = "purple";
         };
 
-
-        # Atajos de teclado personalizados para Flameshot
         "org/gnome/settings-daemon/plugins/media-keys" = {
           custom-keybindings = [
             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/flameshot/"
@@ -96,7 +81,7 @@ in
         "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/flameshot" = {
           name = "Flameshot";
           command = "${flameshot-gui}/bin/flameshot-gui";
-          binding = "<Control>ntilde";  # Ctrl+Ñ
+          binding = "<Control>ntilde";
         };
       };
     };

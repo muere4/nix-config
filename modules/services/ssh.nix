@@ -1,29 +1,27 @@
 { config, pkgs, lib, ... }:
 
 let
-  # Hosts en los que este módulo estará habilitado
   enabledHosts = [ "nixos" "nixi" ];
   userName = "muere";
-
-  # Detectar si este host está habilitado
   enabled = builtins.elem config.networking.hostName enabledHosts;
 in
 {
   config = lib.mkIf enabled {
-    # Cliente SSH del sistema (arranca el agente)
-    #programs.ssh.startAgent = true;
-
-    # Configuración de Home Manager para el usuario
     home-manager.users.${userName} = { ... }: {
-      # Asegurarse de tener ssh-keygen disponible
       home.packages = [ pkgs.openssh ];
 
       programs.ssh = {
         enable = true;
-        extraConfig = ''
-          AddKeysToAgent yes
-        '';
+        enableDefaultConfig = false;  # ← AGREGAR ESTA LÍNEA
+        
         matchBlocks = {
+          # Configuración por defecto para todos los hosts
+          "*" = {
+            extraOptions = {
+              AddKeysToAgent = "yes";
+            };
+          };
+
           # GitHub - Cuenta principal (muere4)
           "github.com" = {
             hostname = "github.com";
@@ -61,6 +59,9 @@ in
 
       # Config de SSH declarativa
       home.file.".ssh/config".text = ''
+        Host *
+          AddKeysToAgent yes
+
         Host github.com
           HostName github.com
           User git
