@@ -19,6 +19,23 @@
     interval = "monthly";
     fileSystems = [ "/" ];
   };
+
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+    priority = 100;
+  };
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+    "vm.page-cluster" = 0;
+  };
+
+
   
 
   boot.loader = {
@@ -143,8 +160,6 @@
 
   # Habilitar flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  services.spice-vdagentd.enable = true;
-
+ 
   system.stateVersion = "25.05";
 }

@@ -12,13 +12,13 @@ in
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
-        ovmf.enable = true;  # ← CAMBIADO: Sin override
       };
     };
     
     virtualisation.spiceUSBRedirection.enable = true;
     users.groups.libvirtd.members = [ userName ];
     programs.virt-manager.enable = true;
+    services.spice-vdagentd.enable = true;
     
     environment.systemPackages = with pkgs; [
       virt-manager
@@ -26,7 +26,7 @@ in
       spice
       spice-gtk
       spice-protocol
-      win-virtio
+      virtio-win
       win-spice
     ];
   };

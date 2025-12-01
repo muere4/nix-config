@@ -11,7 +11,7 @@ in
 {
   config = lib.mkIf enabled {
     # Cliente SSH del sistema (arranca el agente)
-    programs.ssh.startAgent = true;
+    #programs.ssh.startAgent = true;
 
     # Configuración de Home Manager para el usuario
     home-manager.users.${userName} = { ... }: {
