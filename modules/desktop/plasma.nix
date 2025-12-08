@@ -10,6 +10,60 @@ in
 {
   config = lib.mkIf enabled {
 
+
+  # FIX para variables de entorno excesivamente largas
+    # https://github.com/NixOS/nixpkgs/issues/126590#issuecomment-3194531220
+    nixpkgs.overlays = lib.singleton (final: prev: {
+      kdePackages = prev.kdePackages // {
+        plasma-workspace = let
+
+          # El paquete base que queremos sobrescribir
+          basePkg = prev.kdePackages.plasma-workspace;
+
+          # Paquete helper que combina todos los XDG_DATA_DIRS en un solo directorio
+          xdgdataPkg = pkgs.stdenv.mkDerivation {
+            name = "${basePkg.name}-xdgdata";
+            buildInputs = [ basePkg ];
+            dontUnpack = true;
+            dontFixup = true;
+            dontWrapQtApps = true;
+            installPhase = ''
+              mkdir -p $out/share
+              ( IFS=:
+                for DIR in $XDG_DATA_DIRS; do
+                  if [[ -d "$DIR" ]]; then
+                    cp -r $DIR/. $out/share/
+                    chmod -R u+w $out/share
+                  fi
+                done
+              )
+            '';
+          };
+
+          # Deshacer la inyección de XDG_DATA_DIRS que normalmente hace el qt wrapper
+          # y en su lugar inyectar la ruta del paquete helper de arriba
+          derivedPkg = basePkg.overrideAttrs {
+            preFixup = ''
+              for index in "''${!qtWrapperArgs[@]}"; do
+                if [[ ''${qtWrapperArgs[$((index+0))]} == "--prefix" ]] && [[ ''${qtWrapperArgs[$((index+1))]} == "XDG_DATA_DIRS" ]]; then
+                  unset -v "qtWrapperArgs[$((index+0))]"
+                  unset -v "qtWrapperArgs[$((index+1))]"
+                  unset -v "qtWrapperArgs[$((index+2))]"
+                  unset -v "qtWrapperArgs[$((index+3))]"
+                fi
+              done
+              qtWrapperArgs=("''${qtWrapperArgs[@]}")
+              qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "${xdgdataPkg}/share")
+              qtWrapperArgs+=(--prefix XDG_DATA_DIRS : "$out/share")
+            '';
+          };
+
+        in derivedPkg;
+      };
+    });
+
+
+
     # Configuración de Wayland con KDE Plasma 6
     services.desktopManager.plasma6.enable = true;
 

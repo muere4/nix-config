@@ -13,14 +13,16 @@ in
     # Paquetes a nivel de sistema
     environment.systemPackages = with pkgs; [
       dbeaver-bin
+      devenv
     ];
+
+    nix.settings.trusted-users = [ "root" "muere" ];
 
     # Configuración de Home Manager
     home-manager.users.${userName} = { config, ... }: {
       # Paquetes específicos del usuario
       home.packages = with pkgs; [
         dbeaver-bin
-        vscode
       ];
     };
   };

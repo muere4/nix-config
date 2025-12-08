@@ -34,6 +34,7 @@ in
       pythonWithPackages
       pyright
       python312Packages.python-lsp-server
+      poetry
     ];
 
     # Configuración de Home Manager

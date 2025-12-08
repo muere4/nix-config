@@ -63,13 +63,13 @@
           chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         }
 
-        menuentry "Fedora" {
+        menuentry "Debian" {
           insmod part_gpt
           insmod fat
           insmod chain
           set root='hd0,gpt1'
           search --no-floppy --fs-uuid --set=root 8B20-9D40
-          chainloader /EFI/fedora/shimx64.efi
+          chainloader /EFI/debian/shimx64.efi
         }
       '';
     };

@@ -119,6 +119,8 @@ in
 
       # PowerShell (útil para scripts)
       powershell
+
+      dotnet-ef
     ];
 
     # Variables de entorno globales para .NET
