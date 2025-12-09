@@ -23,6 +23,7 @@ in
       # Paquetes específicos del usuario
       home.packages = with pkgs; [
         dbeaver-bin
+        yaak
       ];
     };
   };

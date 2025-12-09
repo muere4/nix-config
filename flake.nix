@@ -31,6 +31,9 @@
           config.allowUnfree = true;
         };
       };
+
+      overlay-packages = import ./overlays/default.nix;
+
     in
     {
       nixosConfigurations = {
@@ -63,7 +66,10 @@
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [ overlay-unstable ];
+              nixpkgs.overlays = [
+                overlay-unstable
+                overlay-packages
+              ];
               nixpkgs.config.allowUnfree = true;
             })
 
