@@ -38,7 +38,6 @@ in
         pandoc
         graphviz
         sqlite-interactive
-        nixfmt-classic
 
         # Fuentes
         emacs-all-the-icons-fonts
@@ -53,6 +52,8 @@ in
         emacsPackages.vterm
         emacsPackages.pdf-tools
         emacsPackages.omnisharp
+        nixd
+        nixfmt
 
         # latex
         texlive.combined.scheme-full
