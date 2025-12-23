@@ -18,9 +18,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    # NUEVO: Noctalia Shell
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, noctalia, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -39,6 +45,7 @@
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };  # Pasar inputs
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
@@ -63,6 +70,7 @@
 
         nixi = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };  # Pasar inputs
           modules = [
             # Agregar el overlay
             ({ config, pkgs, ... }: {
@@ -83,15 +91,16 @@
               home-manager.users.muere = import ./home/default.nix;
               home-manager.backupFileExtension = "backup";
 
-              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+              home-manager.sharedModules = [
+                plasma-manager.homeModules.plasma-manager
+                noctalia.homeModules.default  # NUEVO: Módulo de Noctalia
+              ];
             }
           ];
         };
-      }; # ← Cierra nixosConfigurations aquí
+      };
 
       # Templates al mismo nivel que nixosConfigurations
       templates = import ./templates/default.nix;
-
-
     };
 }
