@@ -6,12 +6,13 @@
 
   home.packages = with pkgs; [
     fastfetch
-    discord
+    vencord-plugins-third
     kdePackages.kdenlive
     vlc
     vlc-bittorrent
     firefox
     kdePackages.arianna
+    tomato-c
   ];
 
 #    xdg.mimeApps = {
