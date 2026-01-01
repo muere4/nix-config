@@ -19,14 +19,13 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    # NUEVO: Noctalia Shell
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, noctalia, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, plasma-manager, dms, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -93,7 +92,7 @@
 
               home-manager.sharedModules = [
                 plasma-manager.homeModules.plasma-manager
-                noctalia.homeModules.default  # NUEVO: Módulo de Noctalia
+                inputs.dms.homeModules.dankMaterialShell.default
               ];
             }
           ];
