@@ -5,7 +5,7 @@
     ./plasma.nix
     #./cosmic.nix
     #./gnome.nix
-    #./niri.nix
+    #./niri
     ./browsers
   ];
 }

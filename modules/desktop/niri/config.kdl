@@ -1,0 +1,163 @@
+// ═══════════════════════════════════════════════════════════════
+// Configuración de niri optimizada para DankMaterialShell
+// Este archivo es gestionado por NixOS
+// ═══════════════════════════════════════════════════════════════
+
+// ─────────────────────────────────────────────────────────────
+// INPUT - Teclado, touchpad y mouse
+// ─────────────────────────────────────────────────────────────
+input {
+    keyboard {
+        xkb {
+            layout "es"
+        }
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    mouse {
+        accel-speed 0.0
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// LAYOUT - Diseño de ventanas
+// ─────────────────────────────────────────────────────────────
+layout {
+    gaps 8
+    center-focused-column "never"
+
+    // IMPORTANTE: Transparente para que el wallpaper de DMS
+    // se vea en el overview/vista de workspaces
+    background-color "transparent"
+
+    border {
+        width 2
+        active-color "#8aadf4"
+        inactive-color "#494d64"
+    }
+
+    focus-ring {
+        width 2
+        active-color "#8aadf4"
+        inactive-color "#494d64"
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// LAYER RULES - Reglas para capas de DMS
+// ─────────────────────────────────────────────────────────────
+
+// Wallpaper de DMS en el backdrop (fondo del overview)
+layer-rule {
+    match namespace="^quickshell$"
+    place-within-backdrop true
+}
+
+// Wallpaper borroso (si blur layer está activado en DMS)
+layer-rule {
+    match namespace="dms:blurwallpaper"
+    place-within-backdrop true
+}
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATIONS - Animaciones suaves
+// ─────────────────────────────────────────────────────────────
+animations {
+    window-open {
+        duration-ms 150
+        curve "ease-out-cubic"
+    }
+
+    window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    workspace-switch {
+        duration-ms 200
+        curve "ease-out-cubic"
+    }
+
+    window-resize {
+        duration-ms 150
+        curve "ease-out-cubic"
+    }
+}
+
+// ─────────────────────────────────────────────────────────────
+// ENVIRONMENT VARIABLES - Variables de entorno para Wayland
+// ─────────────────────────────────────────────────────────────
+environment {
+    XDG_CURRENT_DESKTOP "niri"
+    QT_QPA_PLATFORM "wayland"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    QT_QPA_PLATFORMTHEME "gtk3"
+}
+
+// ─────────────────────────────────────────────────────────────
+// WINDOW RULES - Reglas de ventanas
+// ─────────────────────────────────────────────────────────────
+
+// Apps GNOME: sin bordes dobles, bordes redondeados
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+// Terminales: sin bordes dobles
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    match app-id="Alacritty"
+    match app-id="kitty"
+    draw-border-with-background false
+}
+
+// Ventanas inactivas: ligeramente translúcidas
+window-rule {
+    match is-active=false
+    opacity 0.9
+}
+
+// Todas las ventanas: bordes redondeados por defecto
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+// Ventanas de DMS (widgets): flotantes por defecto
+window-rule {
+    match app-id=r#"org.quickshell$"#
+    open-floating true
+}
+
+// Dolphin: ancho personalizado
+window-rule {
+    match app-id="org.kde.dolphin"
+    default-column-width { proportion 0.6; }
+}
+
+// Control de audio: ventana pequeña
+window-rule {
+    match app-id="pavucontrol"
+    default-column-width { proportion 0.5; }
+}
+
+// ─────────────────────────────────────────────────────────────
+// KEYBINDS PERSONALIZADOS
+// ─────────────────────────────────────────────────────────────
+include "custom-binds.kdl"
+
+// ─────────────────────────────────────────────────────────────
+// DMS AUTO-CONFIGURACIÓN
+// Archivos generados automáticamente por DankMaterialShell
+// ─────────────────────────────────────────────────────────────
+include "dms/colors.kdl"
+include "dms/layout.kdl"
+include "dms/alttab.kdl"
+include "dms/binds.kdl"
