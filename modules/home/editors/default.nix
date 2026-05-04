@@ -1,8 +1,7 @@
 { ... }:
-
 {
   imports = [
-    ./git.nix
-    ./nix.nix
+    ./emacs.nix
+    ./latex.nix
   ];
 }
