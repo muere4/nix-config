@@ -15,6 +15,7 @@
   programs.ewm = {
     enable = true;
     # finalPackage es el emacs30-pgtk con todos tus paquetes de home-manager
-    emacsPackage = config.home-manager.users.muere.programs.emacs.finalPackage;
+    # ewm.nix
+    emacsPackage = config.home-manager.users.muere.programs.doom-emacs.finalEmacsPackage;
   };
 }
