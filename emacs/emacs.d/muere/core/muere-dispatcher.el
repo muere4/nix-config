@@ -100,7 +100,7 @@
   ;; ("V" magit-status)
   ;; ("/" muere/selector-rg)
   ;; (":" selector-M-x)
-  ;; ("q" muere/previous-buffer)
+  ("q" muere/previous-buffer)
   ;; ("B" muere/visit-bookmark)
 
   ("?" describe-key "ayuda"))
