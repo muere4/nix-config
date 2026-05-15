@@ -44,6 +44,7 @@
 (require 'muere-editor)
 (require 'muere-terminal)
 (require 'muere-dispatcher)
+(require 'muere-vc)
 ;; Restaurar GC
 (setq gc-cons-threshold 16777216
       gc-cons-percentage 0.1)
