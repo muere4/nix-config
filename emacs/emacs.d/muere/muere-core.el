@@ -10,6 +10,8 @@
 (require 'muere-hydra)
 (require 'muere-dispatcher)
 (require 'muere-projectile)
+(require 'muere-selector)
+(require 'muere-vc)
 
 (provide 'muere-core)
 ;;; muere-core.el ends here
