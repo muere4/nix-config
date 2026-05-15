@@ -6,6 +6,7 @@
 (require 'muere-theme)
 (require 'muere-modeline)
 (require 'muere-shell)
+(require 'muere-term)
 
 (provide 'muere-ui)
 ;;; muere-ui.el ends here

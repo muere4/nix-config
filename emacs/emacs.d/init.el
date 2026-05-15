@@ -7,6 +7,7 @@
 (require 'muere-core)
 (require 'muere-ui)
 (require 'muere-editor)
+(require 'muere-media)
 (require 'muere-lang)
 
 (provide 'init)

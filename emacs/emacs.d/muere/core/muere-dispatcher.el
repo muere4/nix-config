@@ -91,11 +91,12 @@
 
   ;; TODO: descomentar cuando tengamos los módulos
   ("f" selector-for-files "archivo")
+  ("F" (dired "."))
   ("o" muere/navigate "buf")
   ("O" selector-for-buffers)
   ("p" projectile-switch-project "proyecto")
   ("s" muere/shell-here "shell")
-  ;; ("t" muere/term-here "term")
+  ("t" muere/term-here "term")
   ("v" muere/vc-dispatcher/body "vc")
   ("V" magit-status)
   ("/" muere/selector-rg)
