@@ -7,6 +7,7 @@
 (require 'muere-modeline)
 (require 'muere-shell)
 (require 'muere-term)
+(require 'muere-org)
 
 (provide 'muere-ui)
 ;;; muere-ui.el ends here

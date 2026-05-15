@@ -97,6 +97,7 @@
   ("p" projectile-switch-project "proyecto")
   ("s" muere/shell-here "shell")
   ("t" muere/term-here "term")
+  ("a" muere/agenda-dispatcher/body "notas")
   ("v" muere/vc-dispatcher/body "vc")
   ("V" magit-status)
   ("/" muere/selector-rg)
