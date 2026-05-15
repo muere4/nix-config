@@ -52,8 +52,11 @@
   (define-key read-passwd-map (kbd "C-v") 'evil-paste-after)
 
   ;; TODO: cuando tengamos el dispatcher, atar q a muere/dispatcher
-  ;; (define-key evil-normal-state-map (kbd "q") 'muere/dispatcher)
-  ;; (define-key evil-motion-state-map (kbd "q") 'muere/dispatcher)
+  ;; q abre el dispatcher en normal y motion state
+  (define-key evil-normal-state-map (kbd "q") 'muere/dispatcher)
+  (define-key evil-motion-state-map (kbd "q") 'muere/dispatcher)
+  (define-key evil-emacs-state-map  (kbd "q") 'muere/dispatcher)
+
   )
 
 (provide 'muere-evil)

@@ -7,6 +7,7 @@
 (require 'muere-defaults)
 (require 'muere-evil)
 (require 'muere-hydra)
+(require 'muere-dispatcher)
 
 (provide 'muere-core)
 ;;; muere-core.el ends here
