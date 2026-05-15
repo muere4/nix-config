@@ -9,6 +9,7 @@
 (require 'muere-evil)
 (require 'muere-hydra)
 (require 'muere-dispatcher)
+(require 'muere-projectile)
 
 (provide 'muere-core)
 ;;; muere-core.el ends here
