@@ -6,6 +6,7 @@
 (require 'muere-package)
 (require 'muere-defaults)
 (require 'muere-evil)
+(require 'muere-hydra)
 
 (provide 'muere-core)
 ;;; muere-core.el ends here
