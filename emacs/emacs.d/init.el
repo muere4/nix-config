@@ -43,6 +43,7 @@
 (require 'muere-evil)
 (require 'muere-editor)
 (require 'muere-terminal)
+(require 'muere-completion)
 (require 'muere-dispatcher)
 (require 'muere-vc)
 (require 'muere-lsp)
