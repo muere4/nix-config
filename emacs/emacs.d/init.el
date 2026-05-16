@@ -47,8 +47,11 @@
 (require 'muere-terminal)
 (require 'muere-dispatcher)
 (require 'muere-vc)
+(require 'muere-flycheck)
 (require 'muere-lsp)
 (require 'muere-lang)
+(require 'muere-dired)
+(require 'muere-pdf)
 ;; Restaurar GC
 (setq gc-cons-threshold 16777216
       gc-cons-percentage 0.1)

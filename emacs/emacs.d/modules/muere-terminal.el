@@ -10,7 +10,8 @@
   :hook
   (eshell-mode . eat-eshell-mode)
   :config
-  (setq eat-kill-buffer-on-exit t))
+  (setq eat-kill-buffer-on-exit t)
+  (evil-set-initial-state 'eat-mode 'insert))
 
 (provide 'muere-terminal)
 ;;; muere-terminal.el ends here
