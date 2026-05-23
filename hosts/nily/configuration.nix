@@ -95,6 +95,12 @@
   ];
 
 
+  services.nixMonitor = {
+    enable = true;
+    user = "muere";
+  };
+
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     substituters = [
